@@ -1,0 +1,41 @@
+uses events.EventData
+component provides App requires io.Output out, ui.Window, ui.Image, util.RandomInt ir, data.IntUtil iu, images.Img {
+  Window window
+  Img imagem1
+
+  int App:main(AppParam params[]){
+    window = new Window("Teste")
+		window.setSize(700, 500)
+		window.setVisible(true)
+
+    ir.setSeed(1)
+
+    for(int i=10;i>0;i--){
+      int timeR = ir.get(3)
+      out.print("Time: $(iu.intToString(timeR))   ")
+      if(timeR==0){
+        out.print("1: Antes do IMG")
+        imagem1 = new Img()
+        out.print("1: Depois do IMG\n")
+            window.addObject(imagem1.printImg())
+      }
+
+      if(timeR==1){
+        out.print("2: Antes do IMG")
+        imagem1 = new Img()
+        out.print("2: Depois do IMG\n")
+            window.addObject(imagem1.printImg())
+      }
+
+      if(timeR==2){
+        out.print("3: Antes do IMG")
+        imagem1 = new Img()
+          out.print("3: Depois do IMG\n")
+            window.addObject(imagem1.printImg())
+      }
+    }
+    window.close()
+
+    return 0
+  }
+}

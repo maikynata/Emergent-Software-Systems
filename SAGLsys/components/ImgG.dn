@@ -1,0 +1,14 @@
+component provides Img requires media.image.ImageEncoder:png, ui.Image, util.RandomInt, io.Output out, data.IntUtil iu, ui.ClickableObject {
+
+  Image img
+  Img:Img(){
+    ImageEncoder imgEncod = new ImageEncoder():png()
+    imgEncod.loadImage("imgM.png")
+    img = new ui.Image(imgEncod.getPixels())
+    img.setFrameSize(180, 180)
+    img.setFrameFit(ui.Image.FIT_SCALE)
+  }
+  Image Img:printImg(){
+    return img
+  }
+}

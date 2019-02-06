@@ -1,0 +1,6 @@
+uses ui.Image
+
+interface Img{
+  Img()
+  Image printImg()
+}
