@@ -1,4 +1,4 @@
-component provides Img requires media.image.ImageEncoder:png, ui.Image, util.RandomInt, io.Output out, data.IntUtil iu, ui.ClickableObject {
+component provides Img requires data.String, media.image.ImageEncoder:png, ui.Image, util.RandomInt, io.Output out, data.IntUtil iu, ui.ClickableObject {
 
   Image img
   Img:Img(){
@@ -12,5 +12,11 @@ component provides Img requires media.image.ImageEncoder:png, ui.Image, util.Ran
   Image Img:printImg(){
     return img
   }
+
+  String Img:getImage(String s)
+  {
+    return "localhost:2012/medium/$(s)"
+  }
+
 
 }

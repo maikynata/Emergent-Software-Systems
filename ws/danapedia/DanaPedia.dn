@@ -1,0 +1,100 @@
+// DanaPedia.dn
+//
+// This component
+//
+// Author: Roberto Rodrigues Filho
+// April @ 2018
+
+uses data.String
+
+const char debugMSG[] = "[@DanaPedia]"
+
+component provides danapedia.DanaPedia requires io.Output out, data.IntUtil iu,
+	data.StringUtil strUtil, time.Timer t, time.Calendar ic, time.DateUtil dateUtil {
+	
+	bool started = false
+
+	void writeHeader(Stream doc) {
+		doc.write(new char[] ("<html>", "<head>", "<title>DanaPedia</title>",
+			"<link rel=\"stylesheet\" href=\"/danapedia/css/reset.css\" />",
+			"<link rel=\"stylesheet\" href=\"/danapedia/css/style.css\" />",
+			"</head>", "<body>", "<div id=\"menu\">", "<div id=\"title\">",
+			"<span id=\"title-text\"><a href=\"/danapedia\">DanaPedia</a><span>", "</div>",
+			"<ul id=\"menu-list\">", "<li>Menu: </li>",
+			"<li><a href=\"/danapedia/action_page.dn?page=create\">Create Article</a></li>",
+			"<li><a href=\"/danapedia/action_page.dn?page=list\">List Articles</a></li>",
+			"</ul>", "</div>", "<div id=\"content-body\">"))
+	}
+
+	void writeFooter(Stream doc) {
+		doc.write("</div></body></html>")
+	}
+
+	void DanaPedia:pageNotFound(Stream doc) {
+		writeHeader(doc)
+		doc.write(new char[]("<div id=\"pagenf\">",
+			"<h1 id=\"pnf\">PAGE NOT FOUND!</h1>",
+			"<img id=\"pnf-gif\" src=\"/danapedia/imgs/page-not-found.gif\" alt=\"Page not found\"/>",
+			"</div>"))
+		writeFooter(doc)
+	}
+
+	void listArticles(Stream doc) {
+		writeHeader(doc)
+		doc.write("<div id=\"list\">")
+		doc.write("<ul>")
+		doc.write("</ul></div>")
+		writeFooter(doc)
+	}
+
+	void viewArticle(HashTable hashedHTTPData, Stream doc) {
+		//DateTime dt1 = ic.getTime()
+		String idText = hashedHTTPData.get("id")
+		if ((idText.string == null) || (!strUtil.isNumeric(idText.string))) { pageNotFound(doc) }
+		else {
+			pageNotFound(doc)
+		}
+	}
+
+	void createArticles(HashTable hashedHTTPData, Stream doc) {
+		writeHeader(doc)
+		doc.write(new char[]("<form method=\"GET\" action=\"/danapedia/action_page.dn?page=create\"",
+			" id=\"article-form\">", "<fieldset>", "<legend>Articles:</legend>",
+			"<input type=\"text\" name=\"article-title\"><br>",
+			"<textarea rows=\"4\" cols=\"50\" name=\"article-text\" form=\"article-form\"></textarea><br>",
+			"<input type=\"submit\" value=\"Submit\">",	"</fieldset>", "</form>"))
+		writeFooter(doc)
+	}
+
+	void editArticle(HashTable hashedHTTPData, Stream doc) {
+		String articleTitle = hashedHTTPData.get("article-title")
+		String idText = hashedHTTPData.get("id")
+		if (articleTitle == null) {
+			if ((idText.string == null) || (!strUtil.isNumeric(idText.string))) { pageNotFound(doc) }
+			else {
+				pageNotFound(doc)
+			}	
+		} else {
+			String articleText = hashedHTTPData.get("article-text")
+			if (articleText == null) {
+				writeHeader(doc)
+				doc.write("<h1> Article was not edited! Something went wrong! </h1>")
+				writeFooter(doc)
+			} else {
+				pageNotFound(doc)
+			}
+		}
+	}
+
+	void DanaPedia:action(HashTable hashedHTTPData, Stream doc) {
+		String page = null
+		if (hashedHTTPData != null) { page = hashedHTTPData.get("page")	}
+		if (page != null) { 
+			if (page.string == "list") { listArticles(doc) }
+			else if (page.string == "view") { viewArticle(hashedHTTPData, doc) }
+			else if (page.string == "create") { createArticles(hashedHTTPData, doc) }
+			else if (page.string == "edit") { editArticle(hashedHTTPData, doc) }
+			else { pageNotFound(doc) }
+		} else { pageNotFound(doc) }
+	}
+}

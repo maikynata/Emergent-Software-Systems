@@ -1,0 +1,26 @@
+uses data.String
+uses http.util.HTTPUtil
+
+component provides saglsys.Img requires io.File {
+
+
+
+  void Img:getImage(HashTable hashedHTTPData, Stream doc)
+  {
+     //return "localhost:2012/high/$(s)"
+     String page = null
+     if (hashedHTTPData != null) { page = hashedHTTPData.get("img")	}
+     if (page != null) {
+       File fd = new File(new char[]("../ws/htdocs/high/", page.string), File.FILE_ACCESS_READ)
+       byte fbuf[]
+       int tl = 0
+       while ((fbuf = fd.read(HTTPUtil.BUFF_SIZE)).arrayLength > 0) {
+         tl += fbuf.arrayLength
+         doc.write(fbuf)
+       }
+       fd.close()
+
+     }
+  }
+
+}

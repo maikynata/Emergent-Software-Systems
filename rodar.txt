@@ -1,0 +1,35 @@
+http://localhost:2012/danapedia/action_page.dn?img=image0.png
+
+
+/Emergent Software System/pal$ dana -sp "../ws" InteractiveAssembly ../ws/TCPNetwork.o
+
+
+
+int iterator = 0
+    while(true)
+    {
+      int a = ucb.getAction()
+      sys.setConfig(actions[a].string)
+      t.sleep(1000)
+
+      //normalização
+      //dec d = rows[i].values[a] / 12
+      dec d = (rows[i].values[a] - 5) / 7
+
+      //JSONElement json = sys.getPerceptionData // tratar o json
+
+      out.println(sys.getPerceptionData.string)
+
+      ucb.consumeData(d) // seta o reweard
+
+      actionsTaken[a] +=  1
+
+      iterator ++
+
+      if(iterator == 20){
+        out.println("action Low: $(iu.intToString(actionsTaken[0]))")
+        out.println("action Medium: $(iu.intToString(actionsTaken[1]))")
+        out.println("action High: $(iu.intToString(actionsTaken[2]))")
+        iterator = 0
+      }
+    }

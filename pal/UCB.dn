@@ -1,0 +1,51 @@
+
+component provides UCB requires util.Math math {
+  String learningActions[]
+  dec rewards[]
+  dec counts[]
+  int totalCount
+  int currentAction
+  void UCB:setActions(String actions[]) {
+    learningActions = actions
+    rewards = new dec[actions.arrayLength]
+    counts = new dec[actions.arrayLength]
+  }
+
+  int selectAction() {
+    for (int i = 0; i < counts.arrayLength; i++) {
+      if (counts[i] == 0.0) return i
+    }
+
+    dec maxVal = 0.0
+    int maxInd = 0
+
+    for (int i = 0; i < counts.arrayLength; i++) {
+      // UCB1
+      dec bonus = math.sqrt((2.0 * math.natlog(totalCount)) / counts[i])
+      dec val = rewards[i] + bonus
+
+      if (val > maxVal)
+      {
+        maxVal = val
+        maxInd = i
+      }
+    }
+    return maxInd
+    }
+
+  int UCB:getAction() {
+    return currentAction
+  }
+
+  void UCB:consumeData(dec reward) {
+    //update learning state
+    counts[currentAction] += 1.0
+    dec n = counts[currentAction]
+    dec value = rewards[currentAction]
+    dec newValue = ((n - 1.0) / n) * value + (1.0 / n) * reward
+    rewards[currentAction] = newValue
+    totalCount ++
+    //choose new action
+    currentAction = selectAction()
+  }
+}

@@ -1,0 +1,10 @@
+component provides web_app.Dispatcher requires io.Output out, saglsys.Img img, stream.Stream {
+
+	void Dispatcher:process(char resource[], char method[], HashTable hashedHTTPData, TCPSocket socket) {
+		Stream doc = new Stream(socket)
+		if (resource == "danapedia/action_page.dn") {
+			img.getImage(hashedHTTPData, doc)
+		} //else { danaPedia.pageNotFound(doc) }
+		doc.endStream()
+	}
+}

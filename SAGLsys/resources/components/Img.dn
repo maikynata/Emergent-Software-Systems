@@ -1,6 +1,8 @@
-uses ui.Image
+uses ui.Image, data.String
 
 interface Img{
   Img()
   Image printImg()
+  String getImage(String)
+
 }

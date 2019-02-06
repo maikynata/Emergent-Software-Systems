@@ -1,0 +1,41 @@
+data Metric {
+ char name[]
+ char config[]
+ char source[]
+ dec value
+ int count
+ bool preferHigh
+ char startTime[]
+ char endTime[]
+}
+
+data Event {
+  char name[]
+  char source[]
+  dec value
+  int count
+  char starTime[]
+  char endTime[]
+}
+
+data PerceptionData {
+  Metric metrics[]
+  Event events[]
+}
+
+component provides App requires io.Output out, data.json.JSONEncoder encoder, data.DecUtil du {
+  int App:main(AppParam params[]) {
+    char json[] = " {\"metrics\": [{\"name\": \"resp_time\", \"config\": \"|../ws/TCPNetwork.o,/home/saglsys/dana//components/net/TCP.o,../ws/request/RequestHandler.o,../ws/app_protocols/HTTPProtocol.o,../ws/http/HTTPHeader1_0.o,../ws/http/handler/GET/HTTPGET.o,/home/saglsys/dana//components/io/File.o,../ws/http/handler/DCH/DCHandler.o,../ws/http/util/HTTPUtil.o,/home/saglsys/dana//components/data/StringUtil.o,/home/saglsys/dana//components/data/adt/List.o,/home/saglsys/dana//components/data/adt/HashTable.o,../ws/web_app/Dispatcher.o,../ws/saglsys/ImgG.o,../ws/stream/Stream.o,/home/saglsys/dana//components/encoding/Encoder.uri.o|0:net.TCPSocket:1,0:net.TCPServerSocket:1,0:request.RequestHandler:2,2:app_protocols.AppProtocol:3,3:http.HTTPHeader:4,4:http.handler.GET.HTTPGET:5,5:io.File:6,5:http.handler.DCH.DCHandler:7,7:io.File:6,7:io.FileSystem:6,7:http.util.HTTPUtil:8,8:io.FileSystem:6,8:data.StringUtil:9,9:data.adt.List:10,7:data.adt.HashTable:11,7:data.StringUtil:9,7:web_app.Dispatcher:12,12:saglsys.Img:13,13:io.File:6,12:stream.Stream:14,14:data.StringUtil:9,7:encoding.Encoder-uri:15,4:http.util.HTTPUtil:8|\", \"source\": \"../ws/http/handler/GET/HTTPGET.o\", \"value\":387, \"count\":4, \"preferHigh\":false, \"startTime\": \"2019-2-6 14:43:22\", \"endTime\": \"2019-2-6 14:43:23\"}], \"events\": [{\"name\": \"event_example\", \"source\": \"../ws/http/handler/GET/HTTPGET.o\", \"value\":4, \"count\":4, \"startTime\": \"2019-2-6 14:43:22\", \"endTime\": \"2019-2-6 14:43:23\"}]}"
+
+    out.println("$json")
+
+    PerceptionData d = encoder.jsonToData(json, typeof(PerceptionData), null)
+    dec result = d.metrics[0].value / d.metrics[0].count
+
+    out.println("\nResult: $(du.decToString(result))")
+
+
+
+    return 0
+  }
+}
