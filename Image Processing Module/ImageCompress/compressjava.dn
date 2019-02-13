@@ -1,0 +1,10 @@
+component provides App requires os.Run run{
+
+  int App:main(AppParam params[]){
+
+    char osCommand[] = new char[]("java ImgResize.java image2.png")
+    RunStatus rS = run.execute(osCommand)
+
+    return 0
+  }
+}
