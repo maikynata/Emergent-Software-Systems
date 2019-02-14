@@ -19,7 +19,7 @@ component provides App requires io.Output out, io.Input stdin, io.File, os.Run r
     //}
 		//return newName
 
-		/// testeste
+		///
 
 
   	//File f = new File("out.txt", File.FILE_ACCESS_WRITE)
