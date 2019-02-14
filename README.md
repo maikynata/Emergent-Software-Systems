@@ -20,22 +20,6 @@ Figure 1: General Architecture of the SAGLSys
 Also the implementation of the SAGLSys and its modules will be performed by two
 teams according to Table 1 below:
 
-**Image Processing Module**
-Luma Wanderley de Oliveira Bruna Michelly de Oliveira
-Murilo Borges Edjalma Queiroz da Silva
-Maiky Nata Luiz Mário Lustosa Pascoal
-Roberto de Urzeda Paiva
-
-**Automated Configuration Learning Module**
-Luma Wanderley de Oliveira Bruna Michelly de Oliveira
-Murilo Borges Edjalma Queiroz da Silva
-Maiky Nata Luiz Mário Lustosa Pascoal
-Roberto de Urzeda Paiva
-
-
-        Emergent-Software-Systems/Automated-Configuration-Learning-Module/architecture.png
-
-
 ## Architecture
 ![alt tag](https://raw.githubusercontent.com/maikynata/Emergent-Software-Systems/Automated-Configuration-Learning-Module/architecture.png)
 
