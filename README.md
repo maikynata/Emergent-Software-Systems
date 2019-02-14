@@ -33,13 +33,28 @@ teams according to Table 1 below:
 
  2. Terminal 1: Start EmergentSys
  ```
- Automated Configuration Learning Module/pal dana -sp ../ws EmergentSys.o
+ Enter into the folder:
+ Automated-Configuration-Learning-Module/pal
+
+ Run the following command:
+ dana -sp ../ws EmergentSys.o
  ```
  3. Terminal 2: Start Learner
  ```
- Automated Configuration Learning Module/pal dana -sp ../ws Learner.o
+ Enter into the folder:
+ Automated-Configuration-Learning-Module/pal
+
+ Run the following command:
+ dana -sp ../ws Learner.o
+
  ```
  4. Terminal 3: Start ClientRequests
  ```
- Automated Configuration Learning Module/Client$ dana ClientRequests
+ Enter into the folder:
+ Automated-Configuration-Learning-Module/Client
+
+ Run the following command:
+ dana ClientRequests.o
  ```
+
+ 5. And Press Enter on the Terminal 2 "Learner"
