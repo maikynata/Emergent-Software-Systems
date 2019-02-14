@@ -33,11 +33,8 @@ Maiky Nata Luiz Mário Lustosa Pascoal
 Roberto de Urzeda Paiva
 
 
-        Emergent-Software-Systems/Automated Configuration Learning Module/architecture.png
-
-
 ## Architecture
-![alt tag](https://raw.githubusercontent.com/maikynata/Emergent-Software-Systems/Automated Configuration Learning Module/architecture.png)
+![alt text](https://raw.githubusercontent.com/maikynata/Emergent-Software-Systems/Automated Configuration Learning Module/architecture.png)
 
 ## Dependencies:
  - `Dana VPU [version 224] [released 11th January 2019] >= 2.7`
