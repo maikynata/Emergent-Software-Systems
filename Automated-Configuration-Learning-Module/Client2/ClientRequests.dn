@@ -13,7 +13,7 @@ data FileStructure {
   {
     int App:main(AppParam param[])  {
 
-      char filePath[] = "../Client/log.txt"
+      char filePath[] = "log.txt"
 
       TextFile file = new TextFile(filePath, File.FILE_ACCESS_READ)
 
