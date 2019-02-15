@@ -27,6 +27,7 @@ teams according to Table 1 below:
 ## Dependencies:
  - `Dana VPU [version 224] [released 11th January 2019] >= 2.7`
 
+Download dana on http://www.projectdana.com/
 
 ## Running:
  1. Open 3 Terminals
