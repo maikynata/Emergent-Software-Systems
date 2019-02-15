@@ -21,7 +21,7 @@ Also the implementation of the SAGLSys and its modules will be performed by two
 teams according to Table 1 below:
 
 ## Architecture
-![alt text](https://raw.githubusercontent.com/maikynata/Emergent-Software-Systems/blob/master/Automated-Configuration-Learning-Module/arch.png)
+![alt text](https://raw.githubusercontent.com/maikynata/Emergent-Software-Systems/blob/master/Automated-Configuration-Learning-Module/architecture/arch.png)
 
 
 ## Dependencies:
