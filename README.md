@@ -34,11 +34,11 @@ Download dana on http://www.projectdana.com/
 
  2. Terminal 1: Start EmergentSys
  ```
- Automated-Configuration-Learning-Module/pal dana -sp ../ws EmergentSys.o
+ Automated-Configuration-Learning-Module/pal$ dana -sp ../ws EmergentSys.o
  ```
  3. Terminal 2: Start Learner
  ```
- Automated-Configuration-Learning-Module/pal dana -sp ../ws Learner.o
+ Automated-Configuration-Learning-Module/pal$ dana -sp ../ws Learner.o
  ```
  4. Terminal 3: Start ClientRequests
  ```
