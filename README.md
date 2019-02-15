@@ -1,4 +1,4 @@
-# SAGLSys Emergent-Software-System
+# SAGLSys Emergent Software System
 
 **Proposal for the final project of the** ​ **Emergent Software Summer School:
 Building Systems that Self-Assemble and Self-Learn**
