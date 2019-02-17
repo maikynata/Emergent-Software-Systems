@@ -1,0 +1,58 @@
+// HTTPProxy
+//
+// Proxy that monitors response time from HTTPHandlers
+//
+// Author: Roberto Rodrigues Filho
+// February @ 2017
+const char debugMSG[] = "[@HTTPProxy]"
+
+component provides http.handler.GET.HTTPGET, monitoring.BeingMonitored requires io.Output out,
+	http.handler.GET.HTTPGET, monitoring.Container, time.Calendar ic,  data.IntUtil iu, time.DateUtil du {
+
+	static Container monitor
+	static int count = 0
+	implementation BeingMonitored {
+		Event[] BeingMonitored:getEvents() {
+			if (monitor == null) { monitor = new Container() }
+			return monitor.getEvents()
+		}
+
+		Metric[] BeingMonitored:getMetrics() {
+			if (monitor == null) { monitor = new Container() }
+			return monitor.getMetrics()
+		}
+
+		void BeingMonitored:turnMonitorOn() {
+			if (monitor == null) { monitor = new Container() }
+			monitor.turnMonitorOn()
+		}
+
+		void BeingMonitored:turnMonitorOff() {
+			if (monitor == null) { monitor = new Container() }
+			monitor.turnMonitorOff()
+		}
+	}
+
+	implementation HTTPGET {
+		void HTTPGET:handleRequest(HTTPMessage httpHeader) {
+			if (monitor == null) {
+				monitor = new Container()
+				monitor.turnMonitorOn()
+			}
+
+			DateTime time = ic.getTime()
+			//count++
+
+			HTTPGET httpGET = new HTTPGET()
+			httpGET.handleRequest(httpHeader)
+
+			DateTime time2 = ic.getTime()
+
+			int difftime = du.toMilliseconds(du.diff(time2, time))
+
+			monitor.addMetric("resp_time",difftime, false)
+			//monitor.addMetric("metric_example TimeDif:$(iu.intToString(difftime)) Conexoes:$(iu.intToString(count) )",1, false)
+			monitor.addEvent("event_example", 1)
+		}
+	}
+}
