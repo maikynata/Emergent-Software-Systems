@@ -2,7 +2,7 @@
 
 **Proposal for the final project of the** ​ **Emergent Software Summer School: Building Systems that Self-Assemble and Self-Learn**
 
-<p align="justify"> Satellite images uses a lot of memory space because of their high resolution. This makes it difficult for simultaneous access to different users because the amount of time to load them into a web page is costly. In addition, the distribution of resources to meet these requisition demands still presents deficiencies. Therefore, this project aims to perform the optimization of response time in systems that work with Geographic Image Systems (GIS) by implementing two adaptive modules in the DANA Language. 
+<p align="justify"> Satellite images uses a lot of memory space because of their high resolution. This makes it difficult for simultaneous access to different users because the amount of time to load them into a web page is costly. In addition, the distribution of resources to meet these requisition demands still presents deficiencies. Therefore, this project aims to perform the optimization of response time in systems that work with Geographic Image Systems (GIS) by implementing two adaptive modules in the DANA Language.
 The first one is responsible for performing the image processing, aiming to compress and treat a high resolution image in a distributed architecture so that it is made available in a timely manner to the user. The second module will be responsible for automatically and adaptively define the appropriate configuration according to the characteristics of the user request which is guided by a learning algorithm that simultaneously discover the optimal configuration using pre-defined metrics such as response time. Figure 1 presents an initial proposal of the general architecture for the Self-Adapted GIS Loader System (SAGLSys). </p>
 
 Figure 1: General Architecture of the SAGLSys
@@ -23,7 +23,6 @@ Download dana on http://www.projectdana.com/
 
  2. Terminal 1: Start EmergentSys
  ```
-<<<<<<< HEAD
  Enter into the folder:
  Automated-Configuration-Learning-Module/pal
 
@@ -46,17 +45,6 @@ Download dana on http://www.projectdana.com/
 
  Run the following command:
  dana ClientRequests.o
-=======
- Automated-Configuration-Learning-Module/pal$ dana -sp ../ws EmergentSys.o
- ```
- 3. Terminal 2: Start Learner
- ```
- Automated-Configuration-Learning-Module/pal$ dana -sp ../ws Learner.o
- ```
- 4. Terminal 3: Start ClientRequests
- ```
- Automated-Configuration-Learning-Module/Client$ dana ClientRequests.o
->>>>>>> 7f31e8cf846ea45f3c9edca65fcea0b50188e99e
  ```
 
  5. And Press Enter on the Terminal 2 "Learner"
