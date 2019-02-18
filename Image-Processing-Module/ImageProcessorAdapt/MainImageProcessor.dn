@@ -8,8 +8,33 @@ data FileStructure {
 }
 
 
-component provides App requires  net.http.HTTPRequest http, time.Timer t, io.Output out, time.Calendar cal, data.IntUtil iu, time.DateUtil dt, io.TextFile, data.json.JSONEncoder jsonEncoder {
-    int App:main(AppParam param[])  {
+component provides App requires  Loader loader, composition.Adapter adapter, time.Timer t,
+        io.Output out, time.Calendar cal, data.IntUtil iu, time.DateUtil dt,
+        io.TextFile, data.json.JSONEncoder jsonEncoder {
+
+int App:main(AppParam param[])  {
+
+  IDC mainComponent = loader.load("main_component/MainComponent.o")
+  IDC variantA = loader.load("intf/VariantA.o")
+  IDC variantB = loader.load("intf/VariantB.o")
+  IDC variantC = loader.load("intf/VariantC.o")
+
+  dana.rewire(mainComponent :> "intf.Interface",
+    variantA :< "intf.Interface")
+
+  MainComponent obj = new MainComponent() from mainComponent
+    obj.method()
+
+  adapter.adaptRequiredInterface(mainComponent,
+    "intf.Interface", variantB)
+      obj.method()
+
+  adapter.adaptRequiredInterface(mainComponent,
+    "intf.Interface", variantC)
+       obj.method()
+
+
+
 
       //read log
       char filePath[] = "log.txt"
@@ -34,7 +59,7 @@ for (int i = 0; i < objects.arrayLength; i++) {
 out.println("Request $(iu.intToString(i))")
 
   init = cal.getTime()
-      HTTPResponse responseLow =  http.get("localhost:2012/danapedia/action.dn?img=$(objects[i].resource)", null) //precisa bucar img num diretório de database
+      HTTPResponse responseLow =  http.get("localhost:2012/danapedia/action.dn?img=$(objects[i].resource)", null)
   end = cal.getTime()
 
   lowRT = dt.toMilliseconds(dt.diff(end, init))
