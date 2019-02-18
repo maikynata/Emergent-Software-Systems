@@ -1,3 +1,5 @@
+uses main_component.MainComponent
+
 uses time.DateTime
 
 data FileStructure {
@@ -5,12 +7,12 @@ data FileStructure {
   char resource[]
 }
 
-  component provides App requires  net.http.HTTPRequest http, time.Timer t, io.Output out, time.Calendar cal, data.IntUtil iu, time.DateUtil dt, io.TextFile, data.json.JSONEncoder jsonEncoder
-  {
+
+component provides App requires  net.http.HTTPRequest http, time.Timer t, io.Output out, time.Calendar cal, data.IntUtil iu, time.DateUtil dt, io.TextFile, data.json.JSONEncoder jsonEncoder {
     int App:main(AppParam param[])  {
 
+      //read log
       char filePath[] = "log.txt"
-
       TextFile file = new TextFile(filePath, File.FILE_ACCESS_READ)
 
 
@@ -45,3 +47,20 @@ t.sleep(400)
   return 0
 }
 }
+
+//InteractiveAssembly
+
+/*if (params.arrayLength < 1) {
+  out.println("$(debugMSG) use: dana InteractiveAssembly app.main.Component.o")
+  return 1
+}
+perception = new Perception(true)
+perception.setMain(params[0].string, null)
+char cmd[] = "start"
+while (cmd != "exit") {
+  if (cmd != "start") { commandInterpret(cmd)	}
+  out.print("perception> ")
+  cmd = in.readln()
+}
+
+*/
