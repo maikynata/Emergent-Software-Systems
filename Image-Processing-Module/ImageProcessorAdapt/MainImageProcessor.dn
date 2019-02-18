@@ -15,25 +15,23 @@ component provides App requires  Loader loader, composition.Adapter adapter, tim
 int App:main(AppParam param[])  {
 
   IDC mainComponent = loader.load("main_component/MainComponent.o")
-  IDC variantA = loader.load("intf/VariantA.o")
-  IDC variantB = loader.load("intf/VariantB.o")
-  IDC variantC = loader.load("intf/VariantC.o")
+  IDC variantDana = loader.load("intf/VariantDana.o")
+  IDC variantJava = loader.load("intf/VariantJava.o")
+  IDC variantLinux = loader.load("intf/VariantLinux.o")
 
   dana.rewire(mainComponent :> "intf.Interface",
-    variantA :< "intf.Interface")
+    variantDana :< "intf.Interface")
 
   MainComponent obj = new MainComponent() from mainComponent
     obj.method()
 
   adapter.adaptRequiredInterface(mainComponent,
-    "intf.Interface", variantB)
+    "intf.Interface", variantJava)
       obj.method()
 
   adapter.adaptRequiredInterface(mainComponent,
-    "intf.Interface", variantC)
+    "intf.Interface", variantLinux)
        obj.method()
-
-
 
 
       //read log
