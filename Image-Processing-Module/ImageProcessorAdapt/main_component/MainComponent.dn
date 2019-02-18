@@ -1,5 +1,5 @@
 component provides main_component.MainComponent requires
- intf.Interface intf {
+ intf.ImgProcessor intf {
 	void MainComponent:process() {
 		intf.process()
 	}

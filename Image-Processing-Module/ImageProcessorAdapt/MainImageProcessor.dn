@@ -19,21 +19,21 @@ int App:main(AppParam param[])  {
   IDC variantJava = loader.load("intf/VariantJava.o")
   IDC variantLinux = loader.load("intf/VariantLinux.o")
 
-  dana.rewire(mainComponent :> "intf.Interface",
-    variantDana :< "intf.Interface")
+  dana.rewire(mainComponent :> "intf.ImgProcessor",
+    variantDana :< "intf.ImgProcessor")
 
   MainComponent obj = new MainComponent() from mainComponent
-    obj.method()
+    obj.process()
 
   adapter.adaptRequiredInterface(mainComponent,
-    "intf.Interface", variantJava)
-      obj.method()
+    "intf.ImgProcessor", variantJava)
+      obj.process()
 
   adapter.adaptRequiredInterface(mainComponent,
-    "intf.Interface", variantLinux)
-       obj.method()
+    "intf.ImgProcessor", variantLinux)
+       obj.process()
 
-
+/*
       //read log
       char filePath[] = "log.txt"
       TextFile file = new TextFile(filePath, File.FILE_ACCESS_READ)
@@ -53,7 +53,7 @@ int App:main(AppParam param[])  {
 
 
 for (int i = 0; i < objects.arrayLength; i++) {
-  /* code */
+  //code
 out.println("Request $(iu.intToString(i))")
 
   init = cal.getTime()
@@ -66,7 +66,8 @@ out.println("Request $(iu.intToString(i))")
 
 t.sleep(400)
 
-  }
+  } */
+
   return 0
 }
 }

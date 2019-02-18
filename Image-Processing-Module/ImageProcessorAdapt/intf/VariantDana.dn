@@ -1,6 +1,6 @@
 
-component provides intf.ImgProcessor  requires io.Output out, io.Input stdin, io.File, os.Run run {
-	void Interface:process() {
+component provides intf.ImgProcessor requires io.Output out, io.Input stdin, io.File, os.Run run {
+	void ImgProcessor:process() {
 		out.println("VariantDana")
 	}
 }

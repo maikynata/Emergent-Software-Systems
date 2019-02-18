@@ -1,9 +1,9 @@
 
 
 component provides intf.ImgProcessor requires io.Output out, io.Input stdin, io.File, os.Run run {
-	void Interface:process() {
+	void ImgProcessor:process() {
 
-			out.println("VariantLinux")
+		out.println("VariantLinux")
 
 		/* char osCommand[] = new char[]("mkdir /home testedana1")
 		RunStatus rS1 = run.execute(osCommand)
