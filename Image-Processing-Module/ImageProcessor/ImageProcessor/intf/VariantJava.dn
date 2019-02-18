@@ -1,0 +1,10 @@
+
+component provides intf.ImgProcessor requires io.Output out, io.Input stdin, io.File, os.Run run {
+	void Interface:process() {
+
+			out.println("VariantJava")
+		/* char osCommand[] = new char[]("java ImgResize.java image2.png")
+    RunStatus rS = run.execute(osCommand) */
+
+	}
+}
