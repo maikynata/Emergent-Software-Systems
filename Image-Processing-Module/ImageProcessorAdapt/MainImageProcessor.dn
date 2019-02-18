@@ -19,8 +19,15 @@ int App:main(AppParam param[])  {
   IDC variantJava = loader.load("intf/VariantJava.o")
   IDC variantLinux = loader.load("intf/VariantLinux.o")
 
+//test time processing of variantDana
+  init = cal.getTime()
   dana.rewire(mainComponent :> "intf.ImgProcessor",
     variantDana :< "intf.ImgProcessor")
+  end = cal.getTime()
+
+  lowRT = dt.toMilliseconds(dt.diff(end, init))
+  out.println("response time Low: $(iu.intToString(lowRT))")
+
 
   MainComponent obj = new MainComponent() from mainComponent
     obj.process()
