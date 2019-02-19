@@ -1,3 +1,5 @@
+
+
 interface ImgProcessor {
-	void process()
+	void process2(char fileNameIMG[])
 }

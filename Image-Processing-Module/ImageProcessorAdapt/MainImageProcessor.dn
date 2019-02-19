@@ -3,7 +3,6 @@ uses main_component.MainComponent
 uses time.DateTime
 
 data FileStructure {
-  DateTime date
   char resource[]
 }
 
@@ -23,50 +22,60 @@ int App:main(AppParam param[])  {
   IDC variantJava = loader.load("intf/VariantJava.o")
   IDC variantLinux = loader.load("intf/VariantLinux.o")
 
-  //test time processing of variantDana
-  dana.rewire(mainComponent :> "intf.ImgProcessor",
-    variantDana :< "intf.ImgProcessor")
-
-  MainComponent obj = new MainComponent() from mainComponent
-    obj.process()
-
-  adapter.adaptRequiredInterface(mainComponent,
-    "intf.ImgProcessor", variantJava)
-      obj.process()
-
 
       //read log
-      char filePath[] = "log.txt"
+      char filePath[] = "log_image.txt"
       TextFile file = new TextFile(filePath, File.FILE_ACCESS_READ)
 
 
   char line[]
 
-  FileStructure objects[] = new FileStructure[500]
+  MainComponent obj = new MainComponent() from mainComponent
+
+
+  FileStructure objects[] = new FileStructure[2]
   int c = 0
   while ((line = file.readLine()) != null) {
+    out.println("ok ok")
     FileStructure fLine = jsonEncoder.jsonToData(line, typeof(FileStructure), null)
     objects[c] = fLine
+
+    out.println("$(objects[c].resource)")
+
+  //  dana.rewire(mainComponent :> "intf.ImgProcessor",
+    //  variantDana :< "intf.ImgProcessor")
+    out.println("teste antes Linux")
+    adapter.adaptRequiredInterface(mainComponent,
+      "intf.ImgProcessor", variantLinux)
+         obj.process(objects[c].resource)
+
+         out.println("teste depois linux")
+
+         adapter.adaptRequiredInterface(mainComponent,
+           "intf.ImgProcessor", variantJava)
+             obj.process(objects[c].resource)
+
+             out.println("teste depois java")
+
 
     //out.println("$(iu.intToString(objects[i].region)) - $(iu.intToString(objects[i].plataform)) - $(iu.intToString(objects[i].bandwitch)) - $(iu.intToString(objects[i].quality)) -$(iu.intToString(objects[i].date.hour)):$(iu.intToString(objects[i].date.minute)):$(iu.intToString(objects[i].date.second)):$(iu.intToString(objects[i].date.millisecond)) - $(objects[i].resource)")
     c++
 }
 
 
-for (int i = 0; i < objects.arrayLength; i++) {
+
+out.println("teste saiu")
+
+/*for (int i = 0; i < objects.arrayLength; i++) {
   //code
 //out.println("Request $(iu.intToString(i))")
-
-adapter.adaptRequiredInterface(mainComponent,
-  "$(iu.intToString(intf.ImgProcessor(objects[i])))", variantLinux)
-     obj.process()
 
 
 //out.println("response time Low: $(iu.intToString(lowRT))")
 
 t.sleep(100)
 
-}
+}*/
 
   return 0
 }

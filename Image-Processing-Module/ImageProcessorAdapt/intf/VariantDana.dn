@@ -1,7 +1,63 @@
-uses time.DateTime
+uses media.WH
 
-component provides intf.ImgProcessor requires io.Output out, io.Input stdin, io.File, os.Run run, time.Timer t {
-	void ImgProcessor:process() {
+component provides intf.ImgProcessor requires media.image.ImageEncoder:png, ui.Image, io.Output out, data.IntUtil iu {
+	void ImgProcessor:process2(char fileNameIMG[]) {
+
 		out.println("VariantDana")
+/*
+		ImageEncoder src = new ImageEncoder:png()
+    src.loadImage("lgbt.png")
+
+    PixelMap pxOriginal = src.getPixels()
+
+    WH wh = new WH()
+    wh.width = (pxOriginal.size.width)/2
+    wh.height = (pxOriginal.size.height)/2
+
+    PixelMap pxResized = new PixelMap(wh)
+    out.println("Original:")
+    out.println("$(iu.intToString(pxOriginal.size.height))")
+    out.println("$(iu.intToString(pxOriginal.size.width))")
+    out.println("Resized:")
+    out.println("$(iu.intToString(pxResized.size.height))")
+    out.println("$(iu.intToString(pxResized.size.width))")
+
+      int size = pxResized.size.width * 4 * pxResized.size.height
+      out.println("Tamanho do Array:")
+      out.println("$(iu.intToString(size))")
+
+      out.println("Trocando pixels")
+      pxResized.pixels = new byte[size]
+      int y = 0
+      for (int i = 0; i < size; i = i + 4) {
+        pxResized.pixels[i] = pxOriginal.pixels[y]
+        pxResized.pixels[i+1] = pxOriginal.pixels[y+1]
+        pxResized.pixels[i+2] = pxOriginal.pixels[y+2]
+        pxResized.pixels[i+3] = pxOriginal.pixels[y+3]
+        y = y + 16
+      }
+    ImageEncoder src2 = new ImageEncoder:png()
+    out.println("Salvando imagem")
+    src2.setPixels(pxResized)
+    src2.saveImage("teste.png")
+
 	}
+}
+
+
+/*data Pixel {
+byte r
+byte g
+byte b
+byte a
+}
+
+data PixelRow {
+Pixel pixels[]
+}
+
+data ImageData {
+PixelRow rows[]
+}*/
+}
 }

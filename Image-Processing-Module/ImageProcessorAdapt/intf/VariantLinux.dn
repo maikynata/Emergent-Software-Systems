@@ -3,7 +3,7 @@ uses time.DateTime
 component provides intf.ImgProcessor requires io.Output out, io.Input stdin, io.File, os.Run run,
 time.Timer t, data.IntUtil iu {
 
-	char ImgProcessor:process(char fileNameIMG[]) {
+	void ImgProcessor:process2(char fileNameIMG[]) {
 
 		out.println("Image Name $(fileNameIMG)")
 
@@ -21,6 +21,22 @@ time.Timer t, data.IntUtil iu {
 
 		char osCommand[] = new char[]("mkdir /home testedana3")
 		RunStatus rS3 = run.execute(osCommand) */
+
+
+/* cd /home/saglsys/Emergent Software System/Image-Processing-Module/ImageBD && cp image2.png /home/saglsys/Emergent Software System/Automated-Configuration-Learning-Module/repository/htdocs/high
+
+cd /home/saglsys/Emergent Software System/Image-Processing-Module/ImageBD &&
+cp image2.png /home/saglsys/Emergent Software System/Image-Processing-Module/ImageBD_out &&
+cd /home/saglsys/Emergent Software System/Image-Processing-Module/ImageBD_out &&
+advpng -z -1 image2.png &&
+mv image2.png /home/saglsys/Emergent Software System/Automated-Configuration-Learning-Module/repository/htdocs/medium
+
+
+cd /home/saglsys/Emergent Software System/Image-Processing-Module/ImageBD &&
+cp image2.png /home/saglsys/Emergent Software System/Image-Processing-Module/ImageBD_out &&
+cd /home/saglsys/Emergent Software System/Image-Processing-Module/ImageBD_out &&
+advpng -z  -i 2 -1 image2.png &&
+mv image2.png /home/saglsys/Emergent Software System/Automated-Configuration-Learning-Module/repository/htdocs/low */
 
 	}
 }
