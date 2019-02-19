@@ -8,25 +8,31 @@ data FileStructure {
 }
 
 
+
 component provides App requires  Loader loader, composition.Adapter adapter, time.Timer t,
         io.Output out, time.Calendar cal, data.IntUtil iu, time.DateUtil dt,
         io.TextFile, data.json.JSONEncoder jsonEncoder {
 
 int App:main(AppParam param[])  {
 
+  DateTime init
+  DateTime end
+
+  int timeDana
+
   IDC mainComponent = loader.load("main_component/MainComponent.o")
   IDC variantDana = loader.load("intf/VariantDana.o")
   IDC variantJava = loader.load("intf/VariantJava.o")
   IDC variantLinux = loader.load("intf/VariantLinux.o")
 
-//test time processing of variantDana
+  //test time processing of variantDana
   init = cal.getTime()
   dana.rewire(mainComponent :> "intf.ImgProcessor",
     variantDana :< "intf.ImgProcessor")
   end = cal.getTime()
 
-  lowRT = dt.toMilliseconds(dt.diff(end, init))
-  out.println("response time Low: $(iu.intToString(lowRT))")
+  timeDana = dt.toMilliseconds(dt.diff(end, init))
+  out.println("response time VariantDana: $(iu.intToString(timeDana))")
 
 
   MainComponent obj = new MainComponent() from mainComponent
