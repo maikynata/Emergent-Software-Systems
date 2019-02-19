@@ -32,6 +32,9 @@ int App:main(AppParam param[])  {
 
   MainComponent obj = new MainComponent() from mainComponent
 
+ dana.rewire(mainComponent :> "intf.ImgProcessor",
+    variantDana :< "intf.ImgProcessor")
+
 
   FileStructure objects[] = new FileStructure[2]
   int c = 0
@@ -42,8 +45,6 @@ int App:main(AppParam param[])  {
 
     out.println("$(objects[c].resource)")
 
-  //  dana.rewire(mainComponent :> "intf.ImgProcessor",
-    //  variantDana :< "intf.ImgProcessor")
     out.println("teste antes Linux")
     adapter.adaptRequiredInterface(mainComponent,
       "intf.ImgProcessor", variantLinux)
@@ -54,6 +55,11 @@ int App:main(AppParam param[])  {
          adapter.adaptRequiredInterface(mainComponent,
            "intf.ImgProcessor", variantJava)
              obj.process(objects[c].resource)
+
+             adapter.adaptRequiredInterface(mainComponent,
+               "intf.ImgProcessor", variantDana)
+                  obj.process(objects[c].resource)
+
 
              out.println("teste depois java")
 
