@@ -7,11 +7,9 @@ data FileStructure {
   char resource[]
 }
 
-
-
-component provides App requires  Loader loader, composition.Adapter adapter, time.Timer t,
+component provides App requires  Loader loader, composition.Adapter adapter,
         io.Output out, time.Calendar cal, data.IntUtil iu, time.DateUtil dt,
-        io.TextFile, data.json.JSONEncoder jsonEncoder {
+        io.TextFile, data.json.JSONEncoder jsonEncoder, time.Timer t, intf.ImgProcessor imgProcessor {
 
 int App:main(AppParam param[])  {
 
@@ -26,14 +24,8 @@ int App:main(AppParam param[])  {
   IDC variantLinux = loader.load("intf/VariantLinux.o")
 
   //test time processing of variantDana
-  init = cal.getTime()
   dana.rewire(mainComponent :> "intf.ImgProcessor",
     variantDana :< "intf.ImgProcessor")
-  end = cal.getTime()
-
-  timeDana = dt.toMilliseconds(dt.diff(end, init))
-  out.println("response time VariantDana: $(iu.intToString(timeDana))")
-
 
   MainComponent obj = new MainComponent() from mainComponent
     obj.process()
@@ -42,11 +34,7 @@ int App:main(AppParam param[])  {
     "intf.ImgProcessor", variantJava)
       obj.process()
 
-  adapter.adaptRequiredInterface(mainComponent,
-    "intf.ImgProcessor", variantLinux)
-       obj.process()
 
-/*
       //read log
       char filePath[] = "log.txt"
       TextFile file = new TextFile(filePath, File.FILE_ACCESS_READ)
@@ -67,19 +55,18 @@ int App:main(AppParam param[])  {
 
 for (int i = 0; i < objects.arrayLength; i++) {
   //code
-out.println("Request $(iu.intToString(i))")
+//out.println("Request $(iu.intToString(i))")
 
-  init = cal.getTime()
-      HTTPResponse responseLow =  http.get("localhost:2012/danapedia/action.dn?img=$(objects[i].resource)", null)
-  end = cal.getTime()
+adapter.adaptRequiredInterface(mainComponent,
+  "$(iu.intToString(intf.ImgProcessor(objects[i])))", variantLinux)
+     obj.process()
 
-  lowRT = dt.toMilliseconds(dt.diff(end, init))
 
-  out.println("response time Low: $(iu.intToString(lowRT))")
+//out.println("response time Low: $(iu.intToString(lowRT))")
 
-t.sleep(400)
+t.sleep(100)
 
-  } */
+}
 
   return 0
 }

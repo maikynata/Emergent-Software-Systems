@@ -1,6 +1,9 @@
-component provides main_component.MainComponent requires
- intf.ImgProcessor intf {
-	void MainComponent:process() {
-		intf.process()
-	}
+
+
+component provides main_component.MainComponent requires intf.ImgProcessor intf {
+
+	void MainComponent:process(char fileNameIMG[]) {
+
+}
+
 }

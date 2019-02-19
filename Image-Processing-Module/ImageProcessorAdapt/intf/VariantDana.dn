@@ -1,8 +1,7 @@
-
+uses time.DateTime
 
 component provides intf.ImgProcessor requires io.Output out, io.Input stdin, io.File, os.Run run, time.Timer t {
 	void ImgProcessor:process() {
-		t.sleep(400)
 		out.println("VariantDana")
 	}
 }

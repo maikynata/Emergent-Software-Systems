@@ -1,9 +1,17 @@
+uses time.DateTime
 
+component provides intf.ImgProcessor requires io.Output out, io.Input stdin, io.File, os.Run run,
+time.Timer t, data.IntUtil iu {
 
-component provides intf.ImgProcessor requires io.Output out, io.Input stdin, io.File, os.Run run, time.Timer t {
-	void ImgProcessor:process() {
-		t.sleep(1200)
-		out.println("VariantLinux")
+	char ImgProcessor:process(char fileNameIMG[]) {
+
+		out.println("Image Name $(fileNameIMG)")
+
+	//	out.println("Image Name $(iu.intToString(fileNameIMG)")
+
+	//	out.println("VariantLinux")
+
+	//	File fd = new File(new char[]("../ImageBD/", fileNameIMG.string), File.FILE_ACCESS_READ)
 
 		/* char osCommand[] = new char[]("mkdir /home testedana1")
 		RunStatus rS1 = run.execute(osCommand)

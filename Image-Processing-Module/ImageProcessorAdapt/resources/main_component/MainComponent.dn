@@ -1,3 +1,5 @@
+
+
 interface MainComponent {
-	void process()
+	void process(char fileNameIMG[])
 }
