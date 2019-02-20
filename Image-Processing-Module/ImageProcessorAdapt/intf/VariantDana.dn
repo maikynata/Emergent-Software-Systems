@@ -1,14 +1,19 @@
 uses media.WH
 
-component provides intf.ImgProcessor requires media.image.ImageEncoder:png, ui.Image, io.Output out, data.IntUtil iu {
+component provides intf.ImgProcessor requires media.image.ImageEncoder:png, ui.Image, io.Output out, data.IntUtil iu, os.Run run {
 	void ImgProcessor:process2(char fileNameIMG[]) {
 
 		out.println("VariantDana")
-/*
+
+		char osCommand[] = new char[]("cd /home/saglsys/Emergent-Software-System/Image-Processing-Module/ImageBD && cp $(fileNameIMG) /home/saglsys/Emergent-Software-System/Automated-Configuration-Learning-Module/repository/htdocs/high")
+		RunStatus rS1 = run.execute(osCommand)
+
+		//Medium
 		ImageEncoder src = new ImageEncoder:png()
-    src.loadImage("lgbt.png")
+    src.loadImage(fileNameIMG)
 
     PixelMap pxOriginal = src.getPixels()
+
 
     WH wh = new WH()
     wh.width = (pxOriginal.size.width)/2
@@ -39,7 +44,47 @@ component provides intf.ImgProcessor requires media.image.ImageEncoder:png, ui.I
     ImageEncoder src2 = new ImageEncoder:png()
     out.println("Salvando imagem")
     src2.setPixels(pxResized)
-    src2.saveImage("teste.png")
+    src2.saveImage("/home/saglsys/Emergent-Software-System/Automated-Configuration-Learning-Module/repository/htdocs/medium/$(fileNameIMG)")
+
+
+		//Low
+		//ImageEncoder src = new ImageEncoder:png()
+    src.loadImage(fileNameIMG)
+
+    pxOriginal = src.getPixels()
+
+
+    // WH wh = new WH()
+    wh.width = (pxOriginal.size.width)/4
+    wh.height = (pxOriginal.size.height)/4
+
+    pxResized = new PixelMap(wh)
+    out.println("Original:")
+    out.println("$(iu.intToString(pxOriginal.size.height))")
+    out.println("$(iu.intToString(pxOriginal.size.width))")
+    out.println("Resized:")
+    out.println("$(iu.intToString(pxResized.size.height))")
+    out.println("$(iu.intToString(pxResized.size.width))")
+
+      size = pxResized.size.width * 4 * pxResized.size.height
+      out.println("Tamanho do Array:")
+      out.println("$(iu.intToString(size))")
+
+      out.println("Trocando pixels")
+      pxResized.pixels = new byte[size]
+      y = 0
+      for (int i = 0; i < size; i = i + 4) {
+        pxResized.pixels[i] = pxOriginal.pixels[y]
+        pxResized.pixels[i+1] = pxOriginal.pixels[y+1]
+        pxResized.pixels[i+2] = pxOriginal.pixels[y+2]
+        pxResized.pixels[i+3] = pxOriginal.pixels[y+3]
+        y = y + 16
+      }
+
+		//ImageEncoder src2 = new ImageEncoder:png()
+    out.println("Salvando imagem")
+    src2.setPixels(pxResized)
+    src2.saveImage("/home/saglsys/Emergent-Software-System/Automated-Configuration-Learning-Module/repository/htdocs/low/$(fileNameIMG)")
 
 	}
 }
@@ -59,5 +104,3 @@ Pixel pixels[]
 data ImageData {
 PixelRow rows[]
 }*/
-}
-}

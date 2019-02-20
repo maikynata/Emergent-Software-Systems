@@ -1,42 +1,28 @@
-uses time.DateTime
 
-component provides intf.ImgProcessor requires io.Output out, io.Input stdin, io.File, os.Run run,
-time.Timer t, data.IntUtil iu {
+component provides intf.ImgProcessor requires io.Output out, os.Run run {
 
 	void ImgProcessor:process2(char fileNameIMG[]) {
 
 		out.println("Image Name $(fileNameIMG)")
 
-	//	out.println("Image Name $(iu.intToString(fileNameIMG)")
+		//	out.println("Image Name $(iu.intToString(fileNameIMG)")
 
-	//	out.println("VariantLinux")
+		//	out.println("VariantLinux")
 
-	//	File fd = new File(new char[]("../ImageBD/", fileNameIMG.string), File.FILE_ACCESS_READ)
+		/* char osCommand[] = new char[]("ip a")
+		RunStatus rS = run.execute(osCommand) */
 
-		/* char osCommand[] = new char[]("mkdir /home testedana1")
-		RunStatus rS1 = run.execute(osCommand)
+		//Image High
+		char osCommand1[] = new char[]("cd /home/saglsys/Emergent-Software-System/Image-Processing-Module/ImageBD && cp $(fileNameIMG) /home/saglsys/Emergent-Software-System/Automated-Configuration-Learning-Module/repository/htdocs/high")
+		RunStatus rS1 = run.execute(osCommand1)
 
-		char osCommand[] = new char[]("mkdir /home testedana2")
-		RunStatus rS2 = run.execute(osCommand)
+		//Image Medium
+		char osCommand2[] = new char[]("cd /home/saglsys/Emergent-Software-System/Image-Processing-Module/ImageBD && cp $(fileNameIMG) /home/saglsys/Emergent-Software-System/Image-Processing-Module/ImageBD_out && cd /home/saglsys/Emergent-Software-System/Image-Processing-Module/ImageBD_out && advpng -z -1 $(fileNameIMG) && mv $(fileNameIMG) /home/saglsys/Emergent-Software-System/Automated-Configuration-Learning-Module/repository/htdocs/medium")
+		RunStatus rS2 = run.execute(osCommand2)
 
-		char osCommand[] = new char[]("mkdir /home testedana3")
-		RunStatus rS3 = run.execute(osCommand) */
-
-
-/* cd /home/saglsys/Emergent Software System/Image-Processing-Module/ImageBD && cp image2.png /home/saglsys/Emergent Software System/Automated-Configuration-Learning-Module/repository/htdocs/high
-
-cd /home/saglsys/Emergent Software System/Image-Processing-Module/ImageBD &&
-cp image2.png /home/saglsys/Emergent Software System/Image-Processing-Module/ImageBD_out &&
-cd /home/saglsys/Emergent Software System/Image-Processing-Module/ImageBD_out &&
-advpng -z -1 image2.png &&
-mv image2.png /home/saglsys/Emergent Software System/Automated-Configuration-Learning-Module/repository/htdocs/medium
-
-
-cd /home/saglsys/Emergent Software System/Image-Processing-Module/ImageBD &&
-cp image2.png /home/saglsys/Emergent Software System/Image-Processing-Module/ImageBD_out &&
-cd /home/saglsys/Emergent Software System/Image-Processing-Module/ImageBD_out &&
-advpng -z  -i 2 -1 image2.png &&
-mv image2.png /home/saglsys/Emergent Software System/Automated-Configuration-Learning-Module/repository/htdocs/low */
+		//Image Low
+		char osCommand3[] = new char[]("cd /home/saglsys/Emergent-Software-System/Image-Processing-Module/ImageBD && cp $(fileNameIMG) /home/saglsys/Emergent-Software-System/Image-Processing-Module/ImageBD_out && cd /home/saglsys/Emergent-Software-System/Image-Processing-Module/ImageBD_out &&	advpng -z  -i 2 -1 $(fileNameIMG) && mv $(fileNameIMG) /home/saglsys/Emergent-Software-System/Automated-Configuration-Learning-Module/repository/htdocs/low")
+		RunStatus rS3 = run.execute(osCommand3)
 
 	}
 }

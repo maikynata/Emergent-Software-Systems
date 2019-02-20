@@ -2,9 +2,19 @@ uses time.DateTime
 
 component provides intf.ImgProcessor requires io.Output out, io.Input stdin, io.File, os.Run run, time.Timer t {
 	void ImgProcessor:process2(char fileNameIMG[]) {
-			out.println("VariantJava")
-		/* char osCommand[] = new char[]("java ImgResize.java image2.png")
-    RunStatus rS = run.execute(osCommand) */
+
+		out.println("VariantJava")
+
+		char osCommand1[] = new char[]("cd /home/saglsys/Emergent-Software-System/Image-Processing-Module/ImageBD && cp $(fileNameIMG) /home/saglsys/Emergent-Software-System/Automated-Configuration-Learning-Module/repository/htdocs/high")
+		RunStatus rS1 = run.execute(osCommand1)
+
+		//Medium
+		char osCommand2[] = new char[]("java ImgResize.java $(fileNameIMG)")
+    RunStatus rS2 = run.execute(osCommand2)
+
+		//Low
+		char osCommand3[] = new char[]("java ImgResize.java $(fileNameIMG)")
+    RunStatus rS3 = run.execute(osCommand3)
 
 	}
 }

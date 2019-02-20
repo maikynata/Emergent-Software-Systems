@@ -6,8 +6,8 @@
 // February @ 2017
 const char debugMSG[] = "[@HTTPProxy]"
 
-component provides intf.ImgProcessor  monitoring.BeingMonitored requires io.Output out,
-	intf.ImgProcessor, monitoring.Container, time.Calendar ic,  data.IntUtil iu, time.DateUtil du {
+component provides monitoring.BeingMonitored requires io.Output out,
+	ImageProcessorAdapt.intf.ImgProcessor, monitoring.Container, time.Calendar ic,  data.IntUtil iu, time.DateUtil du {
 
 	static Container monitor
 	static int count = 0

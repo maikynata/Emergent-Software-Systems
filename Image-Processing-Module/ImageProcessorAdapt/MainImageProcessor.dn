@@ -8,7 +8,8 @@ data FileStructure {
 
 component provides App requires  Loader loader, composition.Adapter adapter,
         io.Output out, time.Calendar cal, data.IntUtil iu, time.DateUtil dt,
-        io.TextFile, data.json.JSONEncoder jsonEncoder, time.Timer t, intf.ImgProcessor imgProcessor {
+        io.TextFile, data.json.JSONEncoder jsonEncoder, time.Timer t,
+        intf.ImgProcessor imgProcessor, composition.RecursiveLoader rLoader, media.image.ImageEncoder {
 
 int App:main(AppParam param[])  {
 
@@ -18,9 +19,9 @@ int App:main(AppParam param[])  {
   int timeDana
 
   IDC mainComponent = loader.load("main_component/MainComponent.o")
-  IDC variantDana = loader.load("intf/VariantDana.o")
-  IDC variantJava = loader.load("intf/VariantJava.o")
-  IDC variantLinux = loader.load("intf/VariantLinux.o")
+  IDC variantDana = rLoader.load("intf/VariantDana.o").mainComponent
+  IDC variantJava = rLoader.load("intf/VariantJava.o").mainComponent
+  IDC variantLinux = rLoader.load("intf/VariantLinux.o").mainComponent
 
 
       //read log
@@ -45,23 +46,24 @@ int App:main(AppParam param[])  {
 
     out.println("$(objects[c].resource)")
 
+
     out.println("teste antes Linux")
+
     adapter.adaptRequiredInterface(mainComponent,
       "intf.ImgProcessor", variantLinux)
          obj.process(objects[c].resource)
 
          out.println("teste depois linux")
 
-         adapter.adaptRequiredInterface(mainComponent,
+         /* adapter.adaptRequiredInterface(mainComponent,
            "intf.ImgProcessor", variantJava)
-             obj.process(objects[c].resource)
+             obj.process(objects[c].resource) */
 
-             adapter.adaptRequiredInterface(mainComponent,
+             /* adapter.adaptRequiredInterface(mainComponent,
                "intf.ImgProcessor", variantDana)
                   obj.process(objects[c].resource)
 
-
-             out.println("teste depois java")
+             out.println("teste depois java") */
 
 
     //out.println("$(iu.intToString(objects[i].region)) - $(iu.intToString(objects[i].plataform)) - $(iu.intToString(objects[i].bandwitch)) - $(iu.intToString(objects[i].quality)) -$(iu.intToString(objects[i].date.hour)):$(iu.intToString(objects[i].date.minute)):$(iu.intToString(objects[i].date.second)):$(iu.intToString(objects[i].date.millisecond)) - $(objects[i].resource)")

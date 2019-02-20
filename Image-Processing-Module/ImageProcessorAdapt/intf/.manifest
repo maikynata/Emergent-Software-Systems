@@ -1,0 +1,5 @@
+{
+"defaultLinks":	[
+				{"interface": "MainComponent", "component": "main_component.MainComponent"}
+				]
+}

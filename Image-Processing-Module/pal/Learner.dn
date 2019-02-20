@@ -1,0 +1,141 @@
+const char IP[] = "localhost"
+const int PORT 	= 2011
+
+data Metric {
+ char name[]
+ char config[]
+ char source[]
+ int value
+ int count
+ bool preferHigh
+ char startTime[]
+ char endTime[]
+}
+
+data PerceptionData {
+  Metric metrics[]
+}
+
+component provides App requires UCB ucb, rest.RESys, io.Input in, time.Timer t, time.DateUtil du, io.Output out,
+  net.http.HTTPRequest http, data.IntUtil iu, data.json.JSONEncoder encoder {
+
+  int App:main(AppParam param[]) {
+    RESys sys = new RESys(IP, PORT)
+
+    int totalLow = 0
+    int totalMed = 0
+    int totalHigh = 0
+
+    out.println("Setting main...")
+    sys.setMain("MainImageProcessor.o") // adicionar nosso main
+    out.println("Adding proxy...")
+    sys.addProxy("|../pal/monitoring/proxies/Proxy.o|*(*:intf.ImgProcessor[0]:*)|")//vai mudar o modo de adicionar prxy
+    out.println("Starting collection cycle...")
+
+      in.readln()
+
+      String actions[] = sys.getAllConfigs()
+      ucb.setActions(actions)
+
+      int actionsTaken[] = new int[actions.arrayLength]
+
+      //String actions[]
+
+    //  actions = nome Arquivo
+
+    //for (todos os objects){
+    int exec = 1
+    int iterator = 0
+        while(true)
+        {
+          int a = ucb.getAction()
+          sys.setConfig(actions[a].string)
+          t.sleep(1000)
+
+          //normalização
+          //dec d = rows[i].values[a] / 12
+          //dec d = (rows[i].values[a] - 5) / 7
+
+          //JSONElement json = sys.getPerceptionData // tratar o json
+          char json[] = sys.getPerceptionData()
+          PerceptionData dataP = encoder.jsonToData(json, typeof(PerceptionData), null)
+          dec cost
+          if(dataP.metrics[0].count != 0){
+            cost = dataP.metrics[0].value / dataP.metrics[0].count
+          } else{
+              cost = 1000
+          }
+
+          if (cost == 0) { cost = 1000 }
+
+          //out.println(sys.getPerceptionData())
+
+          ucb.consumeData((1/cost)) // seta o reweard
+
+          actionsTaken[a] +=  1
+
+          iterator++
+
+          if(iterator == 5){
+            out.println("\t\tWindow of Observation: $(iu.intToString(exec))")
+            out.println("Amount of chosen components on Window:")
+            out.println("action Low: $(iu.intToString(actionsTaken[1]))")
+            out.println("action Medium: $(iu.intToString(actionsTaken[2]))")
+            out.println("action High: $(iu.intToString(actionsTaken[0]))")
+            totalLow += actionsTaken[1]
+            totalMed += actionsTaken[2]
+            totalHigh += actionsTaken[0]
+            actionsTaken[0] = 0
+            actionsTaken[1] = 0
+            actionsTaken[2] = 0
+            out.println("---------------------------------------------------------------------")
+            out.println("Amount of chosen components in Total:")
+            out.println("action Low: $(iu.intToString(totalLow))")
+            out.println("action Medium: $(iu.intToString(totalMed))")
+            out.println("action High: $(iu.intToString(totalHigh))")
+
+            out.println("---------------------------------------------------------------------\n\n")
+            iterator = 0
+            exec++
+          }
+
+        }
+
+    /*for (int i = 0; i < rows.arrayLength; i++)
+    {
+
+      int a = ucb.getAction()
+      sys.setConfig(actions[a].string)
+      //normalização
+      //dec d = rows[i].values[a] / 12
+      dec d = (rows[i].values[a] - 5) / 7
+
+      sys.getPerceptionData // tratar o json
+
+      ucb.consumeData(d) // seta o reweard
+
+      actionsTaken[a] +=  1
+
+    }
+
+    out.println("action Low: $(iu.intToString(actionsTaken[0]))")
+    out.println("action Medium: $(iu.intToString(actionsTaken[1]))")
+    out.println("action High: $(iu.intToString(actionsTaken[2]))")*/
+
+
+
+    /*String configs[] = sys.getAllConfigs()
+    for (int count = 0; count < configs.arrayLength; count++) {
+      sys.setConfig(configs[count].string)
+      t.sleep(100)
+      out.println("Perception data ($(iu.intToString(count))): $(sys.getPerceptionData())")
+    }*/
+
+  //}
+    out.println("Terminating...")
+    sys.terminate()
+    out.println("Goodbye!")
+    return 0
+  }
+
+}
