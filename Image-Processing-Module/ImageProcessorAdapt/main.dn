@@ -1,0 +1,9 @@
+component provides App requires os.Run run, intf.ImgProcessor rs{
+
+  int App:main(AppParam params[]){
+    char arch[] = "image1.png"
+    rs.process2(arch)
+
+    return 0
+  }
+}
