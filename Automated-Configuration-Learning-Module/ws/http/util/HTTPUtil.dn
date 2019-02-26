@@ -7,9 +7,9 @@
 
 const char debugMSG[] = "[@HTTPUtil]"
 
-component provides http.util.HTTPUtil requires io.Output out, data.IntUtil iu, io.FileSystem fileSystem, 
+component provides http.util.HTTPUtil requires io.Output out, data.IntUtil iu, io.FileSystem fileSystem,
 	data.StringUtil stringUtil {
-	
+
 	// TODO: I think I can do better than reading 1 byte at a time...
 	HTTPMessage HTTPUtil:readHeader(TCPSocket s) {
 		HTTPMessage httpHeader = null
@@ -21,7 +21,7 @@ component provides http.util.HTTPUtil requires io.Output out, data.IntUtil iu, i
 			len++
 			//stop condition
 			if (len >= 4) {
-				if ((command[len-4] == "\r") && (command[len-3] == "\n") && 
+				if ((command[len-4] == "\r") && (command[len-3] == "\n") &&
 					(command[len-2] == "\r") && (command[len-1] == "\n")) {
 					httpHeader = parseHTTPRequest(command)
 					if (httpHeader != null) { httpHeader.rawHeader = command }
@@ -155,7 +155,7 @@ component provides http.util.HTTPUtil requires io.Output out, data.IntUtil iu, i
 		while ((i < str.arrayLength) && (str[i] != "?")) { i++ }
 		return new char[](stringUtil.subString(str, 0, i))
 	}
-	
+
 	// examples of request first line:
 	// request: GET /path/to/file/index.html HTTP/1.0
 	// response: HTTP/1.0 200 OK
@@ -171,7 +171,7 @@ component provides http.util.HTTPUtil requires io.Output out, data.IntUtil iu, i
 					// response
 					httpMessage.version = helper[0].string
 					if (stringUtil.isNumeric(helper[1].string)) {
-						httpMessage.status = iu.intFromString(helper[1].string)	
+						httpMessage.status = iu.intFromString(helper[1].string)
 					} else { throw new Exception ("Invalid HTTP format.") }
 					helper = removeFromList(helper, 0)
 					helper = removeFromList(helper, 0)
@@ -201,7 +201,7 @@ component provides http.util.HTTPUtil requires io.Output out, data.IntUtil iu, i
 				if (aux == "content-length:") {
 					char cLength[] = helper[0].string
 					if (stringUtil.isNumeric(cLength)) { httpMessage.contentLength = iu.intFromString(cLength) }
-					else { throw new Exception("HTTP invalid package format.") }							
+					else { throw new Exception("HTTP invalid package format.") }
 				}
 				if (aux == "server:") { httpMessage.server = stringUtil.implode(helper, " ") }
 				if (aux == "content-encoding:") { httpMessage.contentEnconding = stringUtil.implode(helper, " ") }
@@ -214,7 +214,7 @@ component provides http.util.HTTPUtil requires io.Output out, data.IntUtil iu, i
 			httpMessage.queryString = getQueryString(httpMessage.resource)
 			httpMessage.resource = normalisePath(httpMessage.resource)
 			httpMessage.resourceExists = resourceExists(httpMessage.resource)
-			httpMessage.mimeType = getMIMEType(httpMessage.resource)	
+			httpMessage.mimeType = getMIMEType(httpMessage.resource)
 		}
 		return httpMessage
 	}
@@ -229,7 +229,7 @@ component provides http.util.HTTPUtil requires io.Output out, data.IntUtil iu, i
 
 	bool resourceExists(char resource[]) {
 		if (fileSystem.exists(resource)) {
-			if (fileSystem.getInfo(resource).type == FileInfo.TYPE_DIR) { return false } 
+			if (fileSystem.getInfo(resource).type == FileInfo.TYPE_DIR) { return false }
 			else { return true }
 		}
 		return false

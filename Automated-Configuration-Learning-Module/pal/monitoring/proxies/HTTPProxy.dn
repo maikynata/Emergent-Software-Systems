@@ -6,11 +6,12 @@
 // February @ 2017
 const char debugMSG[] = "[@HTTPProxy]"
 
-component provides http.handler.GET.HTTPGET, monitoring.BeingMonitored requires io.Output out,
-	http.handler.GET.HTTPGET, monitoring.Container, time.Calendar ic,  data.IntUtil iu, time.DateUtil du {
+component provides http.handler.GET.HTTPGET, monitoring.BeingMonitored requires time.Timer t , data.StringUtil strUtil, io.Output out,
+	http.handler.GET.HTTPGET, monitoring.Container, time.Calendar ic,  data.IntUtil iu, time.DateUtil du,
+	data.adt.HashTable, encoding.Encoder:uri encoder, http.util.HTTPUtil httpUtil {
 
 	static Container monitor
-	static int count = 0
+	//static int count = 0
 	implementation BeingMonitored {
 		Event[] BeingMonitored:getEvents() {
 			if (monitor == null) { monitor = new Container() }
@@ -45,14 +46,92 @@ component provides http.handler.GET.HTTPGET, monitoring.BeingMonitored requires 
 
 			HTTPGET httpGET = new HTTPGET()
 			httpGET.handleRequest(httpHeader)
-
+			t.sleep(100)
 			DateTime time2 = ic.getTime()
-
 			int difftime = du.toMilliseconds(du.diff(time2, time))
-
 			monitor.addMetric("resp_time",difftime, false)
+			//String helper[] = strUtil.explode(httpHeader.resource, "?")
+			HashTable params = parseString2Hash(httpHeader.queryString, null)
+
 			//monitor.addMetric("metric_example TimeDif:$(iu.intToString(difftime)) Conexoes:$(iu.intToString(count) )",1, false)
-			monitor.addEvent("event_example", 1)
+
+			String platformStr  = params.get("plat")
+			String bandwitchStr = params.get("band")
+			String qualityStr = params.get("qlt")
+
+			if (platformStr.string == "1") {
+				monitor.addEvent("desktop", 1)
+				monitor.addEvent("mobile", 0)
+			} else {
+				monitor.addEvent("desktop", 0)
+				monitor.addEvent("mobile", 1)
+			}
+
+
+			if(bandwitchStr.string == "1"){
+				monitor.addEvent("Band1", 1)
+				monitor.addEvent("Band2", 0)
+				monitor.addEvent("Band3", 0)
+			}
+			else if(bandwitchStr.string == "2"){
+				monitor.addEvent("Band1", 0)
+				monitor.addEvent("Band2", 1)
+				monitor.addEvent("Band3", 0)
+			}
+			else if(bandwitchStr.string == "3"){
+				monitor.addEvent("Band1", 0)
+				monitor.addEvent("Band2", 0)
+				monitor.addEvent("Band3", 1)
+			}
+
+		/*	if(qualityStr.string == "0")
+			{
+				monitor.addEvent("ImgLow", 1)
+				monitor.addEvent("ImgMedium", 0)
+				monitor.addEvent("ImgHigh", 0)
+			}
+			else if(qualityStr.string == "1")
+			{
+				monitor.addEvent("ImgLow", 0)
+				monitor.addEvent("ImgMedium", 1)
+				monitor.addEvent("ImgHigh", 0)
+			}
+			else if(qualityStr.string == "2")
+			{
+				monitor.addEvent("ImgLow", 0)
+				monitor.addEvent("ImgMedium", 0)
+				monitor.addEvent("ImgHigh", 1)
+			}*/
+
+
+		//	monitor.addEvent("bandwitch", iu.intFromString(bandwitchStr.string))
+		//	monitor.addEvent("quality", iu.intFromString(qualityStr.string))
+		}
+
+		HashTable parseHTTPData(HTTPMessage httpMessage) {
+			HashTable hashedHTTPData = null
+			if ((httpMessage.postData != "")
+				|| (httpMessage.postData != null)) {
+				hashedHTTPData = parseString2Hash(httpMessage.postData, hashedHTTPData)
+			}
+			if ((httpMessage.queryString != "")
+				|| (httpMessage.queryString != null)) {
+				hashedHTTPData = parseString2Hash(httpMessage.queryString, hashedHTTPData)
+			}
+			return hashedHTTPData
+		}
+
+		//TODO: validate string
+		HashTable parseString2Hash(char str[], HashTable hashedHTTPData) {
+			if (hashedHTTPData == null) { hashedHTTPData = new HashTable() }
+			String helper[] = strUtil.explode(str, "&")
+			String keyValue[]
+			for (int count = 0; count < helper.arrayLength; count++) {
+				keyValue = strUtil.explode(helper[count].string, "=")
+				hashedHTTPData.put(keyValue[0].string,
+					new String(encoder.decode(keyValue[1].string)))
+			}
+			return hashedHTTPData
 		}
 	}
 }

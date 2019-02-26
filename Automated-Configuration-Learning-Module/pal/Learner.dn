@@ -27,15 +27,21 @@ data PerceptionData {
   Event events[]
 }
 
-component provides App requires UCB ucb, rest.RESys, io.Input in, time.Timer t, time.DateUtil du, io.Output out,
+data DataStruct {
+  int band1
+  int band2
+  int band3
+  dec responseTime
+  int mobile
+  int desktop
+}
+
+component provides App requires UCB ucb,  data.DecUtil decut, rest.RESys, io.Input in, time.Timer t, time.DateUtil du, io.Output out,
   net.http.HTTPRequest http, data.IntUtil iu, data.json.JSONEncoder encoder {
 
   int App:main(AppParam param[]) {
     RESys sys = new RESys(IP, PORT)
 
-    int totalLow = 0
-    int totalMed = 0
-    int totalHigh = 0
 
     out.println("Setting main...")
     sys.setMain("../ws/TCPNetwork.o")
@@ -49,6 +55,11 @@ component provides App requires UCB ucb, rest.RESys, io.Input in, time.Timer t, 
       ucb.setActions(actions)
 
       int actionsTaken[] = new int[actions.arrayLength]
+      int actionsTotal[] = new int[actions.arrayLength]
+
+      dec reward
+
+
 
       //String actions[]
 
@@ -57,6 +68,9 @@ component provides App requires UCB ucb, rest.RESys, io.Input in, time.Timer t, 
     //for (todos os objects){
     int exec = 1
     int iterator = 0
+
+    int default = 10
+
         while(true)
         {
           int a = ucb.getAction()
@@ -70,19 +84,55 @@ component provides App requires UCB ucb, rest.RESys, io.Input in, time.Timer t, 
           //JSONElement json = sys.getPerceptionData // tratar o json
           char json[] = sys.getPerceptionData()
           PerceptionData dataP = encoder.jsonToData(json, typeof(PerceptionData), null)
-          dec cost
-          if(dataP.metrics[0].count != 0){
-            cost = dataP.metrics[0].value / dataP.metrics[0].count
-          } else{
-              cost = 1000
+
+
+          DataStruct dataS = new DataStruct()
+
+
+          for (int i = 0; i < dataP.events.arrayLength; i++) {
+          //  out.println("$(dataP.events[i].name) / times = $(iu.intToString(dataP.events[i].value)) / count = $(iu.intToString(dataP.events[i].count))")
+
+            if(dataP.events[i].name == "desktop"){
+                dataS.desktop = dataP.events[i].value
+            }
+            else if(dataP.events[i].name == "mobile"){
+                dataS.mobile = dataP.events[i].value
+            }
+            else if(dataP.events[i].name == "Band1"){
+                dataS.band1 = dataP.events[i].value
+            }
+            else if(dataP.events[i].name == "Band2"){
+                dataS.band2 = dataP.events[i].value
+            }
+            else if(dataP.events[i].name == "Band3"){
+                dataS.band3 = dataP.events[i].value
+            }
+
           }
 
-          if (cost == 0) { cost = 1000 }
+        //  out.println("Antes do if count dif 0")
+
+          if(dataP.metrics[0].count != 0 && dataP.metrics[0].value != 0){
+
+            out.println("value: $(iu.intToString(dataP.metrics[0].value))")
+              out.println("count: $(iu.intToString(dataP.metrics[0].count))")
+
+            dataS.responseTime =  ((dataP.metrics[0].value*1.0) / (1.0*dataP.metrics[0].count))
+
+  out.println("response-time : $(decut.decToString(dataS.responseTime))")
+
+            reward = (((dataS.desktop + (dataS.mobile/2.0))/dataP.metrics[0].count) * (((dataS.band3 + (dataS.band2/3.0) + (dataS.band1/2.0))/dataP.metrics[0].count) - dataS.responseTime))
+
+
+        }
+          else { reward = 1000 }
 
           //out.println(sys.getPerceptionData())
+        //  cost = 1/cost
+          out.println("reward : $(decut.decToString(reward))")
 
-          ucb.consumeData((1/cost)) // seta o reweard
-
+        //  ucb.consumeData((1/cost)) // seta o reweard
+          ucb.consumeData((reward))
           actionsTaken[a] +=  1
 
           iterator++
@@ -93,17 +143,18 @@ component provides App requires UCB ucb, rest.RESys, io.Input in, time.Timer t, 
             out.println("action Low: $(iu.intToString(actionsTaken[1]))")
             out.println("action Medium: $(iu.intToString(actionsTaken[2]))")
             out.println("action High: $(iu.intToString(actionsTaken[0]))")
-            totalLow += actionsTaken[1]
-            totalMed += actionsTaken[2]
-            totalHigh += actionsTaken[0]
+            actionsTotal[1] += actionsTaken[1]
+            actionsTotal[2] += actionsTaken[2]
+            actionsTotal[0] += actionsTaken[0]
+
             actionsTaken[0] = 0
             actionsTaken[1] = 0
             actionsTaken[2] = 0
             out.println("---------------------------------------------------------------------")
             out.println("Amount of chosen components in Total:")
-            out.println("action Low: $(iu.intToString(totalLow))")
-            out.println("action Medium: $(iu.intToString(totalMed))")
-            out.println("action High: $(iu.intToString(totalHigh))")
+            out.println("action Low: $(iu.intToString(actionsTotal[1]))")
+            out.println("action Medium: $(iu.intToString(actionsTotal[2]))")
+            out.println("action High: $(iu.intToString(actionsTotal[0]))")
 
             out.println("---------------------------------------------------------------------\n\n")
             iterator = 0

@@ -1,0 +1,58 @@
+uses time.DateTime
+
+data FileStructure {
+  int region
+  int plataform
+  int bandwitch
+  int quality
+  DateTime date
+  char resource[]
+}
+
+  component provides App requires  net.http.HTTPRequest http, time.Timer t, io.Output out, time.Calendar cal, data.IntUtil iu, time.DateUtil dt, io.TextFile, data.json.JSONEncoder jsonEncoder
+  {
+    int App:main(AppParam param[])  {
+
+      char filePath[] = "../Client1-500/log.txt"
+
+      TextFile file = new TextFile(filePath, File.FILE_ACCESS_READ)
+
+  DateTime init
+  DateTime end
+
+  int lowRT
+  int medRT
+  int highRT
+
+  char line[]
+
+  FileStructure objects[] = new FileStructure[500]
+  int c = 0
+  while ((line = file.readLine()) != null) {
+    FileStructure fLine = jsonEncoder.jsonToData(line, typeof(FileStructure), null)
+    objects[c] = fLine
+
+    //out.println("$(iu.intToString(objects[i].region)) - $(iu.intToString(objects[i].plataform)) - $(iu.intToString(objects[i].bandwitch)) - $(iu.intToString(objects[i].quality)) -$(iu.intToString(objects[i].date.hour)):$(iu.intToString(objects[i].date.minute)):$(iu.intToString(objects[i].date.second)):$(iu.intToString(objects[i].date.millisecond)) - $(objects[i].resource)")
+    c++
+}
+
+
+for (int i = 0; i < objects.arrayLength; i++) {
+  /* code */
+out.println("Request $(iu.intToString(i))")
+
+  init = cal.getTime()
+    //  HTTPResponse responseLow =  http.get("localhost:2012/danapedia/action.dn?img=$(objects[i].resource)", null)
+    HTTPResponse responseLow =  http.get("localhost:2012/danapedia/action.dn?img=$(objects[i].resource)&plat=$(iu.intToString(objects[i].plataform))&band=$(iu.intToString(objects[i].bandwitch))", null)
+  end = cal.getTime()
+
+  lowRT = dt.toMilliseconds(dt.diff(end, init))
+
+  out.println("response time : $(iu.intToString(lowRT))")
+
+t.sleep(400)
+
+  }
+  return 0
+}
+}
